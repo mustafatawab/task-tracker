@@ -3,11 +3,14 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { createSession } from '@/lib/session'
+import { assertSameOrigin } from '@/lib/csrf'
 import { checkLocked, clearAttempts, minutesLeft, recordFailure, remainingAttempts } from '@/lib/rate-limit'
 
 const credentials = z.object({ email: z.string().email(), password: z.string().min(8) })
 
 export async function POST(request: Request) {
+  const csrf = assertSameOrigin(request)
+  if (csrf) return csrf
   const parsed = credentials.safeParse(await request.json())
   if (!parsed.success) return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 })
 
@@ -20,7 +23,16 @@ export async function POST(request: Request) {
   }
 
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email.toLowerCase() } })
-  if (!user || !user.active || !(await bcrypt.compare(parsed.data.password, user.passwordHash))) {
+  const passwordOk = user ? await bcrypt.compare(parsed.data.password, user.passwordHash) : false
+
+  // Correct email + password but deactivated: tell the user plainly.
+  // This must come after the bcrypt compare so we only reveal deactivation
+  // to someone who genuinely owns the credentials.
+  if (user && passwordOk && !user.active) {
+    return NextResponse.json({ error: 'Your account has been deactivated. Please notify your organization admin to reactivate it.' }, { status: 403 })
+  }
+
+  if (!user || !passwordOk) {
     const failure = recordFailure(parsed.data.email)
     if (failure.locked) {
       return NextResponse.json(

@@ -15,8 +15,14 @@ export default function LoginPage() {
     const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
     if (response.status === 429) { setError('Too many attempts right now. Try again in a few minutes.'); setLoading(false); return }
     if (response.status >= 500) { setError('The sign-in service is out of reach. Try again shortly.'); setLoading(false); return }
-    if (!response.ok) { setError('Those credentials did not match our records.'); setLoading(false); return }
-    window.location.href = '/'
+    if (!response.ok) {
+      const body = await response.json().catch(() => null)
+      setError(body?.error ?? 'Those credentials did not match our records.')
+      setLoading(false)
+      return
+    }
+    const next = new URLSearchParams(window.location.search).get('next')
+    window.location.href = next && next.startsWith('/') ? next : '/'
   }
 
   return <main className="relative grid min-h-screen place-items-center bg-background px-4 text-foreground">

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { getCurrentUser } from '@/lib/session'
 import { handleApiErrors } from '@/lib/api'
+import { assertSameOrigin } from '@/lib/csrf'
 
 const memberInput = z.object({ name: z.string().min(2).max(80), email: z.string().email(), password: z.string().min(8), role: z.string().min(2).max(60) })
 
@@ -18,6 +19,8 @@ export async function GET() {
 
 export async function POST(request: Request) {
   return handleApiErrors(async () => {
+    const csrf = assertSameOrigin(request)
+    if (csrf) return csrf
     const user = await getCurrentUser()
     if (!user || user.systemRole !== 'FOUNDER') return NextResponse.json({ error: 'Founder access required' }, { status: 403 })
     const parsed = memberInput.safeParse(await request.json())
