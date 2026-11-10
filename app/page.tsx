@@ -463,25 +463,25 @@ function CreateTaskModal({ members, onClose, createTask, onMissing }: { members:
           <button onClick={onClose} aria-label="Close" className="text-muted-foreground hover:text-foreground"><X className="size-4" /></button>
         </div>
         <div className="mt-6 flex flex-col gap-4">
-          <label className="block text-xs font-medium text-muted-foreground">Task name<input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Review product roadmap" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
-          <label className="block text-xs font-medium text-muted-foreground">Description<textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="What does done look like?" className="mt-2 w-full resize-none rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
+          <label className="block text-xs font-medium text-muted-foreground">Task name<input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Review product roadmap" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
+          <label className="block text-xs font-medium text-muted-foreground">Description<textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="What does done look like?" className="mt-2 w-full resize-none rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
           <div className="grid grid-cols-2 gap-4">
             <label className="block text-xs font-medium text-muted-foreground">Assigned to
               {members.length === 0
                 ? <button onClick={onMissing} type="button" className="mt-2 w-full rounded-xl border border-dashed border-border bg-field px-3 py-3 text-left text-xs text-muted-foreground hover:text-violet-600 dark:text-violet-300">Add a team member first →</button>
-                : <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none focus:border-violet-400/60">
+                : <select value={assigneeId} onChange={(e) => setAssigneeId(e.target.value)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none focus:border-violet-400/60">
                     {members.map((m) => <option key={m.id} value={m.id} className="bg-card">{m.name} — {m.role}</option>)}
                   </select>}
             </label>
             <label className="block text-xs font-medium text-muted-foreground">Priority
-              <select value={priority} onChange={(e) => setPriority(e.target.value as Priority)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-sm capitalize text-white outline-none focus:border-violet-400/60">
+              <select value={priority} onChange={(e) => setPriority(e.target.value as Priority)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-sm capitalize text-foreground outline-none focus:border-violet-400/60">
                 <option value="LOW" className="bg-card">Low</option>
                 <option value="MEDIUM" className="bg-card">Medium</option>
                 <option value="HIGH" className="bg-card">High</option>
               </select>
             </label>
           </div>
-          <label className="block text-xs font-medium text-muted-foreground">Due date<input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none focus:border-violet-400/60" /></label>
+          <label className="block text-xs font-medium text-muted-foreground">Due date<input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none focus:border-violet-400/60" /></label>
           {error && <p className="text-xs text-rose-600 dark:text-rose-300">{error}</p>}
           <div className="flex justify-end gap-2"><button onClick={onClose} className="rounded-xl px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground">Cancel</button><button onClick={submit} disabled={saving} className="rounded-xl bg-violet-500 px-4 py-2.5 text-xs font-medium text-white hover:bg-violet-400 disabled:opacity-60">{saving ? 'Creating…' : 'Create task'}</button></div>
         </div>
@@ -577,11 +577,11 @@ function AddMemberModal({ onClose, addMember }: { onClose: () => void; addMember
           <button onClick={onClose} aria-label="Close" className="text-muted-foreground hover:text-foreground"><X className="size-4" /></button>
         </div>
         <div className="mt-6 flex flex-col gap-4">
-          <label className="block text-xs font-medium text-muted-foreground">Full name<input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Aisha Khan" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
-          <label className="block text-xs font-medium text-muted-foreground">Email<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="aisha@farsight.dev" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
+          <label className="block text-xs font-medium text-muted-foreground">Full name<input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Aisha Khan" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
+          <label className="block text-xs font-medium text-muted-foreground">Email<input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="aisha@farsight.dev" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none transition placeholder:text-faint focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20" /></label>
           <div className="grid grid-cols-2 gap-4">
-            <label className="block text-xs font-medium text-muted-foreground">Temporary password<input value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="min 8 characters" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none placeholder:text-faint focus:border-violet-400/60" /></label>
-            <label className="block text-xs font-medium text-muted-foreground">Role / job title<input value={role} onChange={(e) => setRole(e.target.value)} placeholder="e.g. Design Lead" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-white outline-none placeholder:text-faint focus:border-violet-400/60" /></label>
+            <label className="block text-xs font-medium text-muted-foreground">Temporary password<input value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="min 8 characters" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none placeholder:text-faint focus:border-violet-400/60" /></label>
+            <label className="block text-xs font-medium text-muted-foreground">Role / job title<input value={role} onChange={(e) => setRole(e.target.value)} placeholder="e.g. Design Lead" className="mt-2 w-full rounded-xl border border-border bg-field px-3 py-3 text-base text-foreground outline-none placeholder:text-faint focus:border-violet-400/60" /></label>
           </div>
           {error && <p className="text-xs text-rose-600 dark:text-rose-300">{error}</p>}
           <div className="flex justify-end gap-2"><button onClick={onClose} className="rounded-xl px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground">Cancel</button><button onClick={submit} disabled={saving} className="rounded-xl bg-violet-500 px-4 py-2.5 text-xs font-medium text-white hover:bg-violet-400 disabled:opacity-60">{saving ? 'Adding…' : 'Add member'}</button></div>
